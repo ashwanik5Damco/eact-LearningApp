@@ -9,6 +9,8 @@ export default class Users extends Component {
     // history = useHistory();
     super(props); //calling super class's constructor
     this.handleOnChange = this.handleOnChange.bind(this)
+    this.handleDetails = this.handleDetails.bind(this);
+    this.closeModal = this.closeModal.bind(this);
     this.state = {
       tableHeader: ["#", "User", "Email", "Name","Action"],
       users: [],
@@ -40,7 +42,7 @@ export default class Users extends Component {
           </tbody>
         </table>
 
-        <Modal show={showModal} userDetails={editUserDetails} handleOnChange={this.handleOnChange} />
+        <Modal show={showModal} userDetails={editUserDetails} handleOnChange={this.handleOnChange} handleOnClose={this.closeModal} />
       </>
     );
   }
@@ -69,11 +71,12 @@ export default class Users extends Component {
   };
 
   handleEdit = (user) => {
-    console.log("data", this.state.showModal)
+   
     this.setState({
       editUserDetails : user,
       showModal : true
     })
+    console.log("data", this.state.showModal)
   };
 
   closeModal(){
@@ -92,7 +95,6 @@ export default class Users extends Component {
     })
     this.setState({
       users : allUsers,
-      showModal : false
     });
     localStorage.setItem("userList", JSON.stringify(this.state.users))
   }
@@ -100,6 +102,8 @@ export default class Users extends Component {
   handleDetails(user , id){
     console.log("user",user , "  id ", id)
     // history.push("/UserDetails");
+    this.props.history.push({ pathname : '/UserDetails', state : {userid: user.id} }
+);
   }
 
 }

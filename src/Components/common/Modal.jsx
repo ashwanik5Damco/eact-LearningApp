@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Modal } from 'react-bootstrap';
 
-export default function Example({show, userDetails , handleOnChange}) {
+export default function Example({show, userDetails , handleOnChange , handleOnClose}) {
   // const { userDetails,show, handleOnChange } = this.props;
   const name = userDetails.first_name;
   const [showModal, setShow] = useState(show);
@@ -14,18 +14,17 @@ export default function Example({show, userDetails , handleOnChange}) {
 
 
   useEffect(() => {
-    console.log("show" , show)
-    // setShow(show);
-}, []);
+      setShow(show);
+  
+});
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-      {show}
-      </Button>
       <Modal
-        show={showModal}
-        onHide={handleClose}
+        show={show}
+        onHide =  {(e) =>{
+          e.preventDefault();
+          handleOnClose()}}
         backdrop="static"
         keyboard={false}
       >
@@ -35,35 +34,27 @@ export default function Example({show, userDetails , handleOnChange}) {
         <Modal.Body>
         <Form >
         <Form.Group size="lg" controlId="email">
-          <Form.Label>Username</Form.Label>
+          <Form.Label>Username : {userDetails.first_name}</Form.Label>
           <Form.Control
             autoFocus
             type="text" 
-            value={name}
+            value={first_name}
             onChange={(e) =>{
               e.preventDefault();
              handleOnChange(e.target.value , userDetails.id)}}
           />
         </Form.Group>
         </Form>
-        {/* <div className="modal-body">
-                <div className="row">
-                  <input
-                    name="login"
-                    className="form form-control"
-                    value={userDetails.first_name}
-                    onChange={(event) => {
-                      handleOnChange(event.target.value);
-                    }}
-                  />
-                </div>
-              </div> */}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={(e) =>{
+          e.preventDefault();
+          handleOnClose()}}>
             Close
           </Button>
-          <Button variant="success" onClick={handleClose}>Update</Button>
+          <Button variant="success" onClick={(e) =>{
+          e.preventDefault();
+          handleOnClose()}}>Update</Button>
         </Modal.Footer>
       </Modal>
     </>
